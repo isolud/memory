@@ -6,6 +6,8 @@
  * Time: 16:32
  */
 
+namespace Memory\api\src;
+
 class Db {
 
     /* On défini ci dessous nos informations de connexion à la base de donnée
@@ -25,7 +27,7 @@ class Db {
     public function __construct()
     {
         // On instancie la classe mysqli avec nos informations de connexion, on stocke le résultat dans la variable $db, on peut aussi utiliser pdo au lieu de mysqli si l'extension est installée
-        $this->db = new mysqli($this->$hostname,$this->$username,$this->$password,$this->$dbname);
+        $this->db = new \Mysqli($this->hostname,$this->username,$this->password,$this->dbname);
 
         // Au cas où une erreur de connexion est retournée, nous l'affichons pour faciliter le debug en dev
         if ($this->db->connect_errno) {
