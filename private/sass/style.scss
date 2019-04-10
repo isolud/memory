@@ -1,0 +1,546 @@
+/// Color Variables
+$color-primary-1: #09526A;
+$color-primary-2: #30778F;
+$color-primary-3: #156682;
+$color-primary-4: #034055;
+$color-primary-5: #012C3A;
+$color-fe: #fefefe;
+
+/// Media queries variables
+$sm: 812px;
+$lm: 1388px;
+
+/// Buttons height
+$button-height: 30px;
+
+/// Header height
+$header-height: 100px;
+
+/// Border radius default
+$b-radius : 1.5em;
+
+/// Fruits ( Nous allons créer une liste pour générer nos classes correspondates qui permettront d'afficher les cartes )
+$fruits: Fruit-Pomme Fruit-Banane Fruit-Orange Fruit-CitronV Fruit-Goyave Fruit-Clementine Fruit-CitronJ Fruit-Fraise Fruit-PommeV Fruit-Peche Fruit-Raisin Fruit-Pasteque Fruit-Prune Fruit-Poire Fruit-Cerise Fruit-Framboise Fruit-Mangue Fruit-CeriseJ;
+
+/// Sprite calculation
+$sprite-height : 1800px;
+$items-number: length($fruits);
+
+/// Mixin to prefix several properties at once
+/// @param {Map} $declarations - Declarations to prefix
+/// @param {List} $prefixes (()) - List of prefixes to print
+@mixin prefix($declarations, $prefixes: ()) {
+  @each $property, $value in $declarations {
+    @each $prefix in $prefixes {
+      #{'-' + $prefix + '-' + $property}: $value;
+    }
+
+    // Output standard non-prefixed declaration
+    #{$property}: $value;
+  }
+}
+
+/// Reset
+%reset
+{
+  margin: 0;
+  padding: 0;
+  @include prefix((
+          user-select : none,
+          tap-highlight-color : none
+  ), webkit moz);
+}
+
+/// Text effect
+%text-effect
+{
+  text-shadow : 3px 3px 0 $color-primary-5, -2px -2px 0 $color-primary-5, 2px -2px 0 $color-primary-5, -2px 2px 0 $color-primary-5, 2px 2px 0 $color-primary-5;
+}
+
+///Def box-shadow
+%shadow
+{
+  box-shadow: 0px 2.5px 1.5px 0px rgba(0, 0, 0, 0.3);
+}
+
+html
+{
+  @extend %reset;
+  font-family: 'Lato', sans-serif;
+}
+
+body
+{
+  @extend %reset;
+  width:100%;
+  height: 100vh;
+  font-size: 100%;
+}
+
+input
+{
+  outline-style: none;
+}
+
+ol
+{
+  list-style:none;
+  color: $color-primary-5;
+  @extend %reset;
+  counter-reset: ldb-counter;
+
+  $lh : 50px;
+
+  li
+  {
+    text-align: left;
+    white-space: nowrap;
+    text-indent: 1em;
+    counter-increment: ldb-counter;
+    line-height: $lh;
+    
+    span:first-child
+    {
+      min-width: 250px;
+    }
+    
+
+  }
+
+  li:nth-child(even)
+  {
+    background: rgba($color-primary-2,0.2);
+  }
+
+  li::before {
+    content: counter(ldb-counter) "";
+    color: $color-fe;
+    font-weight: bold;
+    background: $color-primary-2;
+    border-radius: 1em;
+    padding: 0.2em 0.5em 0.2em 0.5em;
+    line-height: $lh/2;
+    vertical-align: middle;
+  }
+}
+
+
+
+
+
+#main-container
+{
+  margin: auto;
+  max-width: 800px;
+  width: 80%;
+  min-width: 480px;
+}
+
+header
+{
+  min-height: $header-height;
+
+}
+
+div#logo
+{
+  margin: 22px 5%;
+  width: 20%;
+
+  float:left;
+  padding: 5px;
+  text-align:center;
+  height: 30px;
+
+
+  span
+  {
+    color:$color-fe;
+    font-weight: bold;
+    font-size: 3em;
+    @extend %text-effect;
+    font-family : 'Luckiest Guy', cursive;
+  }
+}
+
+nav
+{
+  width: auto;
+  overflow: visible;
+  line-height: $header-height;
+  text-align: right;
+  position: relative;
+}
+
+.welcome-name {
+  $height: 15px;
+  background: $color-primary-3;
+  height: $height;
+  position: absolute;
+  line-height: $height - 5;
+  right: 15px;
+  padding: 10px 20px 10px 20px;
+  border-radius: 0 0 $b-radius - 0.5 $b-radius - 0.5;
+  min-width: 150px;
+  text-align: center;
+  margin: auto;
+  color: $color-fe;
+  cursor:pointer;
+  top: 0;
+}
+
+.top-button
+{
+  width: auto;
+  min-width: 150px;
+  height: $button-height;
+  background: $color-primary-3;
+  margin-right: 20px;
+
+  @include prefix((
+          border-radius: $b-radius - 0.5 $b-radius - 0.5 0 0
+  ), webkit moz);
+
+
+  text-align:center;
+  color:$color-fe;
+  display: inline-block;
+  vertical-align: bottom;
+  line-height: normal;
+
+  cursor:pointer;
+
+  span
+  {
+    line-height: $button-height;
+  }
+}
+
+#game-container
+{
+  background: $color-primary-4;
+  width: 100%;
+  min-height: 560px;
+
+  @include prefix((
+          display: grid,
+          grid-template-columns : repeat(6, auto),
+          ///grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr)),
+          grid-auto-rows: 1fr,
+          border-radius: $b-radius $b-radius 0 0
+  ), webkit moz ms);
+
+  padding-top: 20px;
+  padding-bottom: 5px;
+  perspective:1000px;
+
+}
+
+
+.card
+{
+  border: 4px solid $color-fe;
+  border-radius: 1em;
+  box-sizing: border-box;
+  width: 99%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  max-width: 80px;
+
+  transform-style: preserve-3d;
+  transition: transform 0.3s;
+
+  @include prefix((
+          background: radial-gradient(ellipse at center, rgba($color-primary-5,0.6) 0%,rgba($color-primary-4,0.5) 50%,rgba($color-primary-3,0.3) 51%,rgba($color-primary-2,0.2) 100%)
+  ), webkit moz);
+
+  @extend %shadow;
+
+  font-family:serif;
+
+  min-height: 80px;
+  max-height: 85px;
+  cursor:pointer;
+
+}
+
+
+
+.card:after
+{
+  content: "?";
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 55px;
+  color: $color-fe;
+  font-size: 3em;
+  text-align: center;
+  opacity: 1;
+  transition: opacity 1s;
+  cursor:pointer;
+}
+
+.card.flip-card::after {
+  transition: opacity 0s !important;
+  opacity: 0;
+}
+
+.card:active {
+  transition: transform .1s;
+  transform: scale3d(0.9, 0.9, 0.9);
+}
+
+  .flip-card {
+    transform: rotateY(180deg);
+
+    .fruit
+    {
+      backface-visibility:visible;
+      opacity: 1;
+    }
+
+  }
+
+/* Cartes Fruits */
+
+.fruit {
+  opacity: 0;
+  background-image: url("../img/cards.png");
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  background-size: 100% auto;
+  border: 2px solid $color-primary-5;
+  box-sizing: border-box;
+  border-radius:$b-radius/2;
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
+  min-height: 74px;
+  transition: opacity 0.7s;
+}
+
+@each $current-fruit in $fruits {
+  $i: index($fruits, $current-fruit);
+
+    .#{$current-fruit} {
+      background-position: 0 (($i - 1)*(100%/($items-number - 1)));
+    }
+
+  }
+
+
+/*
+Fallback display inline-block pour les navigateurs ne supportant pas display grid
+*/
+
+@supports not ( display:grid)
+{
+  #game-container
+  {
+    text-align: center;
+  }
+
+  .card
+  {
+    margin-right: 2.5%;
+    display: inline-block;
+    margin-left: 2.5%;
+    width: 80px;
+  }
+
+}
+
+/*
+* Barre de temps
+*/
+
+#timer-container
+{
+
+  $height : 30px;
+  background: $color-primary-5;
+  @include prefix((
+          border-radius: 0 0 $b-radius $b-radius
+  ), webkit moz);
+  height: $height;
+  padding: 10px;
+  position: relative;
+
+  div
+  {
+    height : $height - 10;
+    width: 98%;
+    background: $color-fe;
+    margin: auto;
+  }
+
+  #timer-progress {
+    width: 0%;
+    height: $height - 10;
+    background: $color-primary-2;
+    margin: 0;
+    display: inline-block;
+    transition: width 0.1s ease;
+  }
+
+  #game-over
+  {
+    position: absolute;
+    right: 30px;
+    top:13px;
+    font-family: 'Press Start 2P', cursive;
+    color:$color-primary-5;
+  }
+}
+
+/* Ecrans */
+
+#screen-set-name
+{
+  right: 0;
+  margin-top: 34px;
+  border-radius: 1.5em;
+  width: 230px;
+  padding-top: 20px;
+
+}
+
+#screen-view-leaderboard
+{
+  padding: 0;
+  width: auto;
+  max-width: 80%;
+  border-radius: 1.5em 0 0 1.5em;
+  max-height: 500px;
+
+
+  span
+  {
+    display: inline-block;
+    max-width: 50%;
+    margin-right: 15px;
+    vertical-align: middle;
+    overflow: hidden;
+  }
+
+  ol
+  {
+    overflow-y: auto;
+  }
+}
+
+.screen
+{
+  height: 0;
+
+  width: 0;
+  background: rgba($color-fe,0.98);
+  z-index: 2;
+
+  right: 20px;
+  border-radius: $b-radius 0 $b-radius $b-radius;
+  border: 5px solid $color-primary-3;
+
+  @extend %shadow;
+
+  display: none;
+
+
+}
+
+.screen-fixed
+{
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  height: 30% !important;
+  border-radius: 1em;
+  text-align: center;
+  max-width: 650px;
+
+}
+
+.screen-expanded
+{
+  display: block;
+  position: absolute;
+  height: auto;
+  width: 60%;
+  min-height: 60px;
+  padding: 10px;
+
+
+}
+
+/* Inputs */
+
+.input-text {
+  width: 80%;
+  border: 2px solid $color-primary-2;
+  border-radius: 0.9em;
+  padding: 8px;
+}
+
+/* Buttons */
+
+.btn {
+  color: $color-fe;
+  background: $color-primary-3;
+  border-radius: 0.5em;
+  padding: 8px;
+  display: inline-block;
+  margin-top: 10px;
+  border: 1px solid $color-fe;
+
+  @extend %shadow;
+  cursor:pointer;
+}
+
+.btn:hover
+{
+  background: $color-primary-2;
+}
+
+
+/* Media queries pour optimisation mobile */
+
+@media(max-width: $lm)
+{
+
+}
+
+@media(max-width: $sm)
+{
+  #main-container {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  #game-container
+  {
+    @include prefix((
+            grid-template-columns: repeat(4, auto)
+    ), moz webkit ms);
+  }
+  
+  .card
+  {
+
+    -webkit-tap-highlight-color: transparent;
+      max-height: 65px;
+      min-height: 60px;
+      max-width: 65px;
+  }
+
+  .fruit
+  {
+    min-height : 57px;
+  }
+}

@@ -1,11 +1,18 @@
 /**
  * Created by simon on 08/04/2019.
+ *
+ * Memory - Version VanillaJS
+ *
+ * @author Simon Stien <contact@isolud.com>
+ * @version 1.0 https://github.com/isolud/memory
+ *
  */
 
-// Ajout d'une méthode shuffle pour nos tableaux
+
 
 (function()
 {
+    // Ajout d'une méthode shuffle pour nos tableaux
     Array.prototype.shuffle1 = function () {
         var l = this.length + 1;
         while (l--) {
@@ -19,7 +26,10 @@
         return this;
     };
 
-// User Object
+    /*
+    * Gére le joueur
+    *
+     */
     var User = function()
     {
         this.name=null;
@@ -75,7 +85,9 @@
     };
 
 
-// Screen Object
+    /*
+    * Gére l'affichage et le rendu des écrans du jeu
+     */
     var Screen = function(domContainer,parentContainer, afterDisplayCallback)
     {
 
@@ -155,7 +167,9 @@
     };
 
 
-// Card Object
+    /*
+    * Gére les cartes
+    */
     var Card = function(fruit)
     {
         this.fruit = fruit;
@@ -171,7 +185,9 @@
 
     };
 
-// TImer Object
+    /*
+    * Gere le compte à rebour de fin de partie
+    */
     var Timer = function(tps,finishedCallback)
     {
         this.isStarted = false;
@@ -219,7 +235,9 @@
 
 
 
-// Leadernoard Object
+    /*
+    * Gere le classement
+    */
     var Leaderboard = function()
     {
         this.readUrl = "api/leaderboard/read.php";
@@ -230,7 +248,6 @@
         {
             var d = document.createDocumentFragment();
             var ol = document.createElement('ol');
-
             var i = 0;
             var l = response.length;
 
@@ -248,11 +265,8 @@
                         li.appendChild(span_name);
                         li.appendChild(span_score);
                         ol.appendChild(li);
-
-
                     }
                 }
-
 
             }
             else
@@ -272,7 +286,9 @@
         }
     };
 
-// Http/Ajax Object
+    /*
+    * Service http, en oie les requetes et ajax et recoit les données du serveur
+    */
     var HttpService = function(params)
     {
         var url = params.url,
@@ -293,7 +309,17 @@
             if (this.readyState == 4) {
 
                 // responseTexte est une propriété renvoyée par la requête ajax, c'est le contenu retourné par la requête
-                var response = JSON.parse(this.responseText);
+               try
+               {
+                   var response = JSON.parse(this.responseText);
+               }
+                catch(e) {
+                    console.log(e);
+                    if (typeof(errorCallback) == "function") {
+                        errorCallback(response);
+
+                    }
+                }
 
                 if(this.status == 200 || this.status == 201) {
 
@@ -322,7 +348,9 @@
         xhttp.send(JSON.stringify(data));
     };
 
-
+    /*
+    * Objet statique représentant le jeu
+    */
     var Memory = {
         UserObj : new User(),
         _domGameContainer : document.getElementById('game-container'),
@@ -332,7 +360,7 @@
         cardsSelected : 0,
         cardsHistory : [],
         pairFound : 0,
-        _defResetDelay : 500,
+        _defResetDelay : 800,
         _winScreen: new Screen('screen-win'),
         _loseScreen: new Screen('screen-lose'),
         _defTime: (5*60), //Temps limite pour trouver les paires, 5 minutes * 60 secondes = 300 secondes
@@ -380,8 +408,6 @@
                     }.bind(this));
                 this.LeaderboardScreen.display();
 
-
-
             }
         },
         UserInit : function()
@@ -424,7 +450,6 @@
             this._domGameContainer.appendChild(d);
 
         },
-
         gameListener : function(e,card)
         {
             if(!this.TimerObj.isFinished) {
@@ -461,8 +486,6 @@
                 }
             }
 
-
-
         },
         resetCardsSelected: function()
         {
@@ -491,8 +514,8 @@
             for(i; i<l; i++)
             {
                 /*
-                 Si les deux cartes sont identiques et si elles n'ont pas dékà été validées comme paire, on incrémente
-                 la variable pairFound et on indique que notre objet carte a été trouvée
+                 * Si les deux cartes sont identiques et si elles n'ont pas dékà été validées comme paire, on incrémente
+                 * la variable pairFound et on indique que notre objet carte a été trouvée
                  */
                 if(this.cardsHistory[i].selected == 1 && this.cardsHistory[i].found == 0)
                 {
@@ -500,8 +523,6 @@
                     this.pairFound++;
                 }
             }
-
-
 
             this.checkWin();
         },
@@ -546,6 +567,12 @@
                         errorCallback : function(response)
                         {
                             console.log(response);
+                            current_screen.domContainer.querySelector('.js-action-replay').addEventListener('click',function()
+                            {
+                                current_screen.close();
+                                current_screen.templateRestore();
+                                Memory.replay();
+                            });
                         }
                     });
 

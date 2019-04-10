@@ -1,9 +1,5 @@
 {
     "autoload": {
         "psr-4": { "Memory\\api\\src\\": "api/src" }
-    },
-    "require": {
-        "guzzlehttp/guzzle": "^6.3",
-        "phpunit/phpunit": "^8.1"
     }
 }

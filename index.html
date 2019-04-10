@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head lang="fr">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Memory</title>
+    <link rel="stylesheet" href="public/assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato|Luckiest+Guy|Press+Start+2P" rel="stylesheet">
+</head>
+<body>
+
+<div id="main-container">
+
+    <!-- Logo du jeu et liens pour déclenchement affichage des ecrans -->
+    <header>
+        <div id="logo"><span>Memory</span></div>
+
+        <nav>
+            <div class="top-button" id="screen-leaderboard-container">
+                <span>Classement</span>
+                <!-- Screen Leaderboard -->
+                <div id="screen-view-leaderboard" class="screen">
+                    <ol>
+                        <li><span>Chargement ...</span></li>
+                    </ol>
+                </div>
+            </div>
+            <div class="welcome-name" id="welcome-msg-container">
+                    <span id="welcome-view">Bienvenue Visiteur</span>
+                    <div id="screen-set-name" class="screen">
+                        <input type="text" id="input-set-name" class="input-text" placeholder="Entrez votre nom">
+                        <span class="btn btn-envoyer" id="btn-set-name">Envoyer</span>
+                    </div>
+            </div>
+        </nav>
+    </header>
+
+    <div id="game-container">
+        <!-- Les cartes sont affichées ici -->
+    </div>
+
+    <!-- Affichage de la barre de progression du temps écoulé -->
+    <div id="timer-container">
+        <div>
+            <div id="timer-progress"></div>
+            <span id="game-over">Game Over</span>
+        </div>
+    </div>
+
+    <!-- Ecrans gagné et perdu -->
+    <div class="screen screen-fixed" id="screen-win">
+        <h1 id="screen-win-message1">Bravo %name%</h1>
+        <p id="screen-win-message2">
+            Vous avez remporté la partie en %min% minutes et %sec% secondes
+        </p>
+        <span class="btn btn-envoyer js-action-replay">Rejouer</span>
+
+    </div>
+    <div class="screen screen-fixed" id="screen-lose">
+        <h1 id="screen-lose-message1">Désolé %name%</h1>
+        <p id="screen-lose-message2">
+            Le temps est dépassé, vous avez perdu :/
+        </p>
+        <span class="btn btn-envoyer js-action-replay">Rejouer</span>
+    </div>
+
+
+
+</div>
+
+<script src="public/assets/js/memory.js"></script>
+</body>
+</html>
